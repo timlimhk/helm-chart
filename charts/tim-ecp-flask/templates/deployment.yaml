@@ -29,7 +29,7 @@ spec:
         run: tim-ecp-flask
     spec:
       containers:
-      - image: tim-ecp-flask:latest
+      - image: timlimhk/tim-ecp-flask:latest
         imagePullPolicy: Never
         name: tim-ecp-flask
         ports:
@@ -38,6 +38,13 @@ spec:
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
+        {{- if .Values.env }}
+        env:
+        {{- range $key, $value := .Values.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
